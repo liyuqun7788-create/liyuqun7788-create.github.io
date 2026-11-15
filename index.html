@@ -41,6 +41,9 @@
         }
       }
       * { box-sizing: border-box; }
+      html, body { overflow-x: clip; }
+      figure { margin: 0; }
+      img { max-width: 100%; }
       html { scroll-behavior: smooth; }
       @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
       body {
@@ -59,14 +62,24 @@
       .topbar-inner {
         max-width: 1020px; margin: 0 auto; padding: 0 20px;
         display: flex; align-items: center; justify-content: space-between;
-        gap: 12px; min-height: 58px;
+        gap: 12px; min-height: 58px; position: relative;
       }
       .brand { font-weight: 700; font-size: 1.05rem; color: var(--ink); text-decoration: none; white-space: nowrap; padding: 8px 0; }
       .brand span { color: var(--accent); }
+      .menu-btn {
+        display: none; align-items: center; justify-content: center; gap: 8px;
+        width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line);
+        background: var(--surface); color: var(--ink); cursor: pointer; flex: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .menu-btn svg { width: 22px; height: 22px; stroke: currentColor; }
+      .menu-btn .icon-close { display: none; }
+      .menu-btn[aria-expanded="true"] .icon-open { display: none; }
+      .menu-btn[aria-expanded="true"] .icon-close { display: block; }
       nav.main-nav { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
       nav.main-nav a {
         color: var(--ink-soft); text-decoration: none; font-size: 0.95rem;
-        padding: 10px 12px; border-radius: 8px; min-height: 40px;
+        padding: 10px 12px; border-radius: 8px; min-height: 44px;
         display: inline-flex; align-items: center;
       }
       nav.main-nav a:hover { color: var(--accent); background: var(--accent-soft); }
@@ -221,16 +234,94 @@
       footer .foot-links { margin-top: 8px; display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
       footer .foot-links a { text-decoration: none; font-weight: 600; }
 
+      /* ---------- Tablet ---------- */
+      @media (max-width: 900px) {
+        .skills-grid { grid-template-columns: 1fr 1fr; }
+        .contact-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      /* ---------- Mobile / phone version ---------- */
       @media (max-width: 760px) {
-        .hero { padding-top: 30px; }
-        .hero-grid { grid-template-columns: 1fr; gap: 24px; }
-        .works-grid, .hobby-grid, .contact-grid, .skills-grid, .cert-grid { grid-template-columns: 1fr; }
-        .edu-card, .exp-card { flex-direction: column; gap: 14px; padding: 22px; }
-        .exp-photo { width: 100%; } .exp-photo img { width: 100%; height: auto; max-height: 320px; }
-        .topbar-inner { padding: 8px 14px; flex-direction: column; align-items: flex-start; gap: 2px; }
-        nav.main-nav { justify-content: flex-start; }
-        main { padding: 0 14px 32px; }
-        nav.main-nav a { padding: 10px 8px; font-size: 0.9rem; }
+        html { -webkit-text-size-adjust: 100%; }
+        body { line-height: 1.65; }
+
+        /* Compact sticky header with hamburger menu */
+        .topbar-inner { padding: 0 16px; min-height: 56px; flex-direction: row; align-items: center; gap: 10px; }
+        .brand { font-size: 1rem; padding: 10px 0; overflow: hidden; text-overflow: ellipsis; }
+        .menu-btn { display: inline-flex; }
+        nav.main-nav {
+          display: none; position: absolute; top: calc(100% + 1px); left: 0; right: 0;
+          background: var(--surface); border-bottom: 1px solid var(--line);
+          box-shadow: 0 18px 32px rgba(0,0,0,0.12);
+          padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+          flex-direction: column; flex-wrap: nowrap; gap: 2px; max-height: calc(100dvh - 57px); overflow-y: auto;
+        }
+        nav.main-nav.is-open { display: flex; }
+        nav.main-nav a {
+          width: 100%; min-height: 48px; padding: 12px 14px; font-size: 1rem; font-weight: 500;
+          border-radius: 10px; justify-content: space-between;
+        }
+        nav.main-nav a::after { content: "›"; font-size: 1.3rem; line-height: 1; color: var(--muted); }
+        nav.main-nav a:active { background: var(--accent-soft); color: var(--accent); }
+
+        main { padding: 0 16px 24px; }
+
+        /* Hero stacks, image first impression stays tight */
+        .hero { padding: 26px 0 4px; }
+        .hero-grid { grid-template-columns: 1fr; gap: 22px; }
+        .hero-kicker { font-size: 0.8rem; margin-bottom: 14px; }
+        h1 { font-size: 1.85rem; line-height: 1.22; margin-bottom: 14px; letter-spacing: -0.01em; }
+        .hero p.lede { font-size: 1rem; line-height: 1.7; }
+        .hero-figure img { border-radius: 12px; }
+        .hero-figure figcaption { text-align: left; font-size: 0.8rem; }
+        .fact-list { gap: 8px; margin-top: 18px; }
+        .fact-list li { font-size: 0.88rem; padding: 8px 12px; min-height: 36px; }
+        .social-row { flex-direction: column; gap: 10px; margin-top: 20px; }
+        .social-btn { width: 100%; justify-content: center; min-height: 50px; padding: 12px 16px; font-size: 0.96rem; border-radius: 12px; }
+
+        /* Sections */
+        section.block { padding: 34px 0 2px; scroll-margin-top: 64px; }
+        .block-head { margin-bottom: 18px; }
+        .block-head h2 { font-size: 1.38rem; line-height: 1.3; gap: 8px; }
+        .block-head h2 .en { font-size: 0.72rem; }
+        .block-head p { font-size: 0.94rem; line-height: 1.65; }
+        .work-group-head { margin: 22px 0 12px; flex-wrap: wrap; }
+        .work-group-head h3 { font-size: 1.08rem; }
+
+        /* All card grids become single column */
+        .works-grid, .hobby-grid, .contact-grid, .skills-grid, .cert-grid { grid-template-columns: 1fr; gap: 14px; }
+        .work-card { padding: 20px 18px; border-radius: 12px; }
+        .work-card .card-foot { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .work-link { display: inline-flex; align-items: center; min-height: 40px; padding: 4px 0; }
+
+        .exp-card, .edu-card { flex-direction: column; gap: 14px; padding: 20px 18px; border-radius: 12px; }
+        .exp-card + .exp-card { margin-top: 14px; }
+        .exp-photo { width: 100%; max-width: 100%; min-width: 0; margin: 0; display: flex; gap: 14px; align-items: center; }
+        .exp-card > *, .edu-card > * { min-width: 0; max-width: 100%; }
+        .exp-photo img { width: 88px; height: 88px; flex: none; border-radius: 50%; object-fit: cover; }
+        .exp-photo figcaption { text-align: left; margin-top: 0; font-size: 0.85rem; min-width: 0; overflow-wrap: anywhere; }
+        .exp-card h3 { font-size: 1.15rem; }
+        .edu-badge { width: 48px; height: 48px; border-radius: 10px; }
+        .edu-badge svg { width: 25px; height: 25px; }
+        .edu-card h3 { font-size: 1.08rem; line-height: 1.35; }
+        .edu-card .degree { display: block; line-height: 1.45; }
+
+        .skill-card { padding: 20px 18px; border-radius: 12px; }
+        .chip { padding: 6px 12px; min-height: 32px; display: inline-flex; align-items: center; }
+        .cert-card { padding: 18px; border-radius: 12px; }
+        .hobby-card { flex-direction: column; gap: 12px; padding: 20px 18px; border-radius: 12px; }
+        .contact-card { padding: 20px 18px; border-radius: 12px; min-height: 44px; }
+        .contact-card p { word-break: break-word; overflow-wrap: anywhere; }
+
+        footer { margin-top: 40px; padding: 24px 16px calc(28px + env(safe-area-inset-bottom, 0px)); }
+        footer .foot-links { gap: 8px 16px; }
+        footer .foot-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 6px 4px; }
+      }
+
+      @media (max-width: 380px) {
+        main { padding-left: 14px; padding-right: 14px; }
+        h1 { font-size: 1.68rem; }
+        .brand { font-size: 0.94rem; }
       }
     </style>
   </head>
@@ -238,7 +329,11 @@
     <header class="topbar">
       <div class="topbar-inner">
         <a class="brand" href="#top">Hugo<span> · </span>Personal Website</a>
-        <nav class="main-nav" aria-label="Main navigation">
+        <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav" id="menu-btn">
+          <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <nav class="main-nav" id="main-nav" aria-label="Main navigation">
           <a href="#top">Home</a>
           <a href="#works">Portfolio</a>
           <a href="#experience">Experience</a>
@@ -677,5 +772,29 @@
       </div>
       <div style="margin-top:10px;">© 2026 Hugo's Personal Website</div>
     </footer>
+    <script>
+      (function () {
+        var btn = document.getElementById('menu-btn');
+        var nav = document.getElementById('main-nav');
+        if (!btn || !nav) return;
+        function closeMenu() {
+          nav.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-label', 'Open menu');
+        }
+        function toggleMenu() {
+          var open = nav.classList.toggle('is-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        }
+        btn.addEventListener('click', function (e) { e.stopPropagation(); toggleMenu(); });
+        nav.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(); });
+        document.addEventListener('click', function (e) {
+          if (nav.classList.contains('is-open') && !nav.contains(e.target) && !btn.contains(e.target)) closeMenu();
+        });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+        window.addEventListener('resize', function () { if (window.innerWidth > 760) closeMenu(); });
+      })();
+    </script>
   </body>
 </html>
